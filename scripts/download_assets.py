@@ -91,7 +91,7 @@ def main():
 
     convert()
     print("\nDone. Run detection with:")
-    print("    python scripts/detect.py <your-image-or-video> --output out.png")
+    print("    python scripts/detect.py street.jpg --output outputs/street.png")
 
 
 if __name__ == "__main__":

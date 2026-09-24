@@ -141,7 +141,7 @@ right-hand vehicles collapsed to two, and the white pickup's two `truck` boxes
 
 ### Video
 
-A 301-frame dashcam clip, detected frame by frame. Typical per-frame output:
+A 300-frame dashcam clip, detected frame by frame. Typical per-frame output:
 5–11 detections, mostly `car` plus `traffic light` and occasional `person`.
 Inference ran at roughly 36–57 ms per frame on a T4 GPU, so ~20–27 fps for the
 network pass alone, before the Python-side decoding and drawing.

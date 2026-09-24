@@ -21,7 +21,7 @@ Each stage exists to expose the limitation that motivates the next one:
 </p>
 <p align="center"><em>YOLOv3 raw output (22 candidate boxes) → after non-maximal suppression (9 detections).</em></p>
 
-📹 **[`VideoResult.mp4`](VideoResult.mp4)** — the detector run frame by frame over a 301-frame dashcam clip.
+📹 **[`VideoResult.mp4`](VideoResult.mp4)** — the detector run frame by frame over a 300-frame dashcam clip.
 
 ---
 
