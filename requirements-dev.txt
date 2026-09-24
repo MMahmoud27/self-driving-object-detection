@@ -1,0 +1,5 @@
+# Everything in requirements.txt, plus the tooling used to test and lint.
+-r requirements.txt
+
+pytest>=8.0,<9.0
+ruff>=0.6,<1.0

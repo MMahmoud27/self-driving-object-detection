@@ -174,11 +174,29 @@ Two thresholds control the output:
 pytest
 ```
 
-The suite covers box geometry, non-maximal suppression, window extraction,
-letterboxing and output decoding. Decoding is driven by a synthetic feature map
-rather than a real forward pass, so the whole thing runs in under a second with
-no TensorFlow, no GPU and no weights file — which is also what lets it run in
-CI on every push.
+**53 tests run in under a second** with no TensorFlow, no GPU and no weights
+file, covering box geometry, non-maximal suppression, window extraction,
+letterboxing, output decoding and dataset construction. Decoding is driven by a
+synthetic feature map rather than a real forward pass, which is what keeps them
+fast enough to run in CI on every push.
+
+Install TensorFlow and a further 16 tests unskip, covering model construction
+and the weight loader:
+
+```bash
+pip install -r requirements-dev.txt && pytest
+```
+
+Two of those are worth calling out, because together they verify the Darknet
+conversion without downloading anything:
+
+- The assembled graph has **exactly 62,001,757 parameters**, matching the
+  published network. One wrong filter count anywhere and this fails.
+- ×4 bytes plus the 20-byte header, that is **248,007,048 — byte-for-byte the
+  size of the official `yolov3.weights`**. The loader is then run against a
+  synthetic file of that exact shape and must consume every value with none
+  left over, which pins the architecture, the header parsing and the read order
+  all at once.
 
 ---
 

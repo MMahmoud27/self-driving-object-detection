@@ -166,3 +166,29 @@ repository root.
 4. **Fine-tune YOLO on road data** instead of using stock COCO weights.
 5. **Add tracking** (SORT or ByteTrack) so detections persist across frames and
    the flicker disappears.
+
+## Appendix: verifying the Darknet conversion
+
+The weights ship as a Darknet `.weights` file — a 20-byte header followed by a
+flat stream of float32 values, with no architecture and no layer names. Getting
+the Keras rebuild wrong anywhere would silently produce a model that loads but
+detects nothing, so it is checked arithmetically rather than by eye:
+
+| Check | Expected | Result |
+|---|---|---|
+| Convolutions | 75 | 75 |
+| Detection heads (the only unbiased convs) | 81, 93, 105 | 81, 93, 105 |
+| Stride-2 downsamples | 5 | 5 |
+| Output grids at 416×416 | 13, 26, 52 | 13, 26, 52 |
+| Output depth | 255 | 255 |
+| **Total parameters** | **62,001,757** | **62,001,757** |
+
+That last row is the decisive one. 62,001,757 × 4 bytes + 20 bytes of header is
+248,007,048 — exactly the size of the official `yolov3.weights`. Every float in
+the file maps to one parameter in the graph, so a single wrong filter count
+anywhere would break the equality.
+
+`tests/test_models.py` then runs the loader against a synthetic file of that
+exact shape and requires it to finish with nothing left unread, which pins the
+architecture, the header parsing and the per-layer read order together. A short
+file or a long one both raise.
