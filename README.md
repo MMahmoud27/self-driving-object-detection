@@ -162,7 +162,7 @@ Two thresholds control the output:
 │   ├── download_assets.py  Fetch and convert the YOLOv3 weights
 │   ├── detect.py           Run detection on an image or video
 │   └── train_classifier.py Train and evaluate a vehicle classifier
-├── tests/                  42 tests, no GPU or weights required
+├── tests/                  69 tests; 53 need no GPU, TensorFlow or weights
 └── docs/                   Detailed results and figures
 ```
 
