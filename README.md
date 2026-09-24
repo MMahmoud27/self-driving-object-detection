@@ -214,8 +214,8 @@ Two thresholds control the output:
 
 ## Credits
 
-Built by **Mahmoud, Viraj, Shloak and Jonathan** as a group project in the
-Inspirit AI Scholars program.
+Code by **Mahmoud Mohamed**, written during the Inspirit AI Scholars program
+and extended afterwards.
 
 - YOLOv3 — Redmon & Farhadi, [*YOLOv3: An Incremental Improvement*](https://arxiv.org/abs/1804.02767); original paper [*You Only Look Once*](https://arxiv.org/abs/1506.02640)
 - VGG16 — Simonyan & Zisserman, [*Very Deep Convolutional Networks*](https://arxiv.org/abs/1409.1556)

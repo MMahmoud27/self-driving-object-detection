@@ -2,7 +2,8 @@
 
 The slide deck is at
 [`presentation/object-detection-for-self-driving-cars.pptx`](presentation/object-detection-for-self-driving-cars.pptx)
-(15 slides, presented by Mahmoud, Viraj, Shloak and Jonathan).
+(15 slides, from the end-of-program group presentation — its own title slide
+lists the presenters).
 
 ## The video result
 

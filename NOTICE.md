@@ -6,8 +6,8 @@ is what publishing it on GitHub grants — but not to copy, modify or redistribu
 it.
 
 That is not caution for its own sake. This project is coursework built on top of
-material the project team did not write, and an MIT or Apache licence would be a
-grant of rights the team does not hold.
+material I did not write, and an MIT or Apache licence would be a grant of
+rights I do not hold.
 
 ## Who wrote what
 
@@ -30,17 +30,17 @@ in the cells marked `### YOUR CODE HERE`.
 - The pretrained YOLOv3 weights, the sample images and the source video, all
   hosted in the course's storage bucket
 
-**Written by the project team** (Mahmoud, Viraj, Shloak and Jonathan):
+**Written by Mahmoud Mohamed** — every exercise cell in the notebooks:
 
 - The sliding-window extraction loop
 - The bodies of `detect_image` and `detect_video`
 - The model definitions built to the course's specification
 - The window-classification and thresholding code
-- The presentation, its narration, and the rendered detection video
+- The rendered detection video
 
 **Added afterwards, outside the course** (see the git history):
 
-- `src/roadvision/` — the course helpers and the team's answers refactored into
+- `src/roadvision/` — the course helpers and my exercise answers refactored into
   an importable package, deduplicated across notebooks and documented
 - `app/app.py` — a working Streamlit front end. The notebook's own app cells
   were left unfinished during the course and have since been completed
@@ -56,7 +56,7 @@ course's code, it carries the same restriction as the original.
 | YOLOv3 / DarkNet weights | Redmon & Farhadi; redistributed via the course bucket | Original release was public domain; the redistributed copy is the course's |
 | VGG16 / ResNet50 / DenseNet121 weights | Keras Applications | Each carries its own upstream licence |
 | CIFAR-10 | Krizhevsky, University of Toronto | Free for research use |
-| Sample images and video | Course storage bucket | Unknown — not the team's to relicense |
+| Sample images and video | Course storage bucket | Unknown — not mine to relicense |
 | Diagrams in the slide deck | YOLO paper, third-party blog posts, stock photography | Third-party; reproduced in the deck for a classroom presentation |
 
 `scripts/download_assets.py` fetches the weights and media from the course
@@ -66,4 +66,4 @@ committed to this repository.
 ## If you want to reuse something
 
 Ask. Open an issue, or contact the repository owner. For anything originating
-with the course, permission has to come from Inspirit AI, not from us.
+with the course, permission has to come from Inspirit AI, not from me.
