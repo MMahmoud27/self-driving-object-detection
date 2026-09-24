@@ -34,6 +34,11 @@ def main():
                         help="Overlap above which a weaker box is dropped (default 0.45)")
     args = parser.parse_args()
 
+    # Check the input before the weights: a typo in the filename is the more
+    # likely mistake, and loading a 237 MB model first to then fail is wasteful.
+    if not os.path.exists(args.input):
+        parser.error(f"Input file not found: {args.input!r}")
+
     if not os.path.exists(args.weights):
         parser.error(
             f"Weights not found at {args.weights!r}. "
