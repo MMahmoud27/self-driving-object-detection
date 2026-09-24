@@ -167,6 +167,32 @@ repository root.
 5. **Add tracking** (SORT or ByteTrack) so detections persist across frames and
    the flicker disappears.
 
+## Appendix: reproducing the classifier numbers
+
+The figures above come from the original GPU run. Re-running
+`scripts/train_classifier.py` from scratch on CPU, with no seeding, lands within
+half a point of every one of them:
+
+| Model | Metric | Original | Re-run | Delta |
+|---|---|---|---|---|
+| Perceptron | final train | 96.50% | 96.37% | −0.13 |
+| Perceptron | final test | 70.90% | 71.33% | +0.43 |
+| Perceptron | best test | 72.50% | 72.80% | +0.30 |
+| CNN | final train | 100.00% | 100.00% | 0.00 |
+| CNN | final test | 84.70% | 84.33% | −0.37 |
+| CNN | best test | 84.73% | 84.67% | −0.06 |
+
+Both runs are 20 epochs on the same balanced 15,000/3,000 split. The spread is
+ordinary run-to-run variance from weight initialisation and shuffling; nothing
+here depends on a lucky seed. Reproduce it with:
+
+```bash
+python scripts/train_classifier.py --model perceptron --epochs 20
+python scripts/train_classifier.py --model cnn --epochs 20
+```
+
+The VGG16 transfer run is not re-verified here — it wants a GPU to be practical.
+
 ## Appendix: verifying the Darknet conversion
 
 The weights ship as a Darknet `.weights` file — a 20-byte header followed by a

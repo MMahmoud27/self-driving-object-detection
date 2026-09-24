@@ -77,7 +77,9 @@ and NMS thresholds so you can watch the precision/recall trade-off directly.
 | CNN — `Conv2D(32) → ReLU → MaxPool → Dense(128) → Dense(3)` | 20 | 100% | **84.7%** |
 | VGG16 transfer — ImageNet backbone + custom head | 20 | 99.8% | **94.6%** |
 
-Chance is 33.3% — the dataset is balanced by construction.
+Chance is 33.3% — the dataset is balanced by construction. These numbers
+reproduce: an independent from-scratch re-run lands within half a point on every
+row ([details](docs/RESULTS.md#appendix-reproducing-the-classifier-numbers)).
 
 <p align="center">
   <img src="docs/images/training-accuracy.png" width="46%" alt="Training vs validation accuracy across epochs">
