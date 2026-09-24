@@ -6,8 +6,8 @@ The slide deck is at
 
 ## The video result
 
-**[`video1_detected.mp4`](video1_detected.mp4)** — YOLOv3 run frame by frame over
-the 301-frame dashcam clip.
+**[`VideoResult.mp4`](../VideoResult.mp4)** — YOLOv3 run frame by frame over the
+301-frame dashcam clip, in the repository root.
 
 Slide 13 of the deck links out to the same video on Google Drive rather than
 embedding it:

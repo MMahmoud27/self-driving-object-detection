@@ -72,7 +72,7 @@ On the street-scene test image, YOLOv3 produced 22 candidate boxes above the
 1 bus, 1 truck and 1 traffic light. Applied frame-by-frame to a 301-frame
 dashcam clip, it tracked vehicles and traffic lights throughout.
 
-📹 **The rendered result is in this repo: [`docs/video1_detected.mp4`](docs/video1_detected.mp4)**
+📹 **The rendered result is in this repo: [`VideoResult.mp4`](VideoResult.mp4)**
 (also [on Google Drive](https://drive.google.com/file/d/17PSLYgAJQP6l5GMWqCWJdCPD0yb2KRgU/view),
 which is what slide 13 of the deck links to).
 
@@ -136,7 +136,8 @@ trade-off directly.
 │   └── viz.py              Accuracy curves, confusion matrices
 ├── app/app.py          Streamlit front end
 ├── scripts/            Command-line entry points
-└── docs/               Presentation, the detection video, result images, write-up
+├── VideoResult.mp4     The rendered YOLOv3 detection video
+└── docs/               Presentation, result images, detailed write-up
 ```
 
 The notebooks are otherwise exactly as they ran on Colab, so the outputs saved in

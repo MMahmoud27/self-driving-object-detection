@@ -6,11 +6,10 @@ models/
 *.keras
 *.h5
 
-# Detection outputs
+# Detection outputs you generate locally (the committed VideoResult.mp4 is
+# not matched by these, so it stays tracked)
 outputs/
 *_detected.mp4
-# ...except the rendered result we ship as documentation
-!docs/video1_detected.mp4
 
 # Python
 __pycache__/
