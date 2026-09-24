@@ -226,3 +226,10 @@ conversion without downloading anything:
 - VGG16 — Simonyan & Zisserman, [*Very Deep Convolutional Networks*](https://arxiv.org/abs/1409.1556)
 - [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) — Krizhevsky, University of Toronto
 - Pretrained backbones via [Keras Applications](https://keras.io/api/applications/); each carries its own upstream licence
+
+---
+
+## License
+
+MIT — see [LICENSE](LICENSE). The pretrained YOLOv3 weights and the ImageNet
+backbones carry their own upstream terms.
