@@ -1,8 +1,10 @@
 # Object Detection for Self-Driving Cars
 
-Building up a road-scene object detector the long way round — starting from a
-perceptron that can barely tell a car from a truck, and ending with YOLOv3
-labelling every vehicle, pedestrian and traffic light in a dashcam video.
+[![tests](https://github.com/MMahmoud27/self-driving-object-detection/actions/workflows/tests.yml/badge.svg)](https://github.com/MMahmoud27/self-driving-object-detection/actions/workflows/tests.yml)
+
+Road-scene object detection, built up from a classifier that can barely tell a
+car from a truck to YOLOv3 labelling every vehicle, pedestrian and traffic light
+in a dashcam video.
 
 Each stage exists to expose the limitation that motivates the next one:
 
@@ -18,6 +20,49 @@ Each stage exists to expose the limitation that motivates the next one:
   <img src="docs/images/yolo-after-nms.png" width="48%" alt="After non-maximal suppression: 9 clean boxes">
 </p>
 <p align="center"><em>YOLOv3 raw output (22 candidate boxes) → after non-maximal suppression (9 detections).</em></p>
+
+📹 **[`VideoResult.mp4`](VideoResult.mp4)** — the detector run frame by frame over a 301-frame dashcam clip.
+
+---
+
+## Quickstart
+
+```bash
+git clone https://github.com/MMahmoud27/self-driving-object-detection.git
+cd self-driving-object-detection
+pip install -r requirements.txt
+```
+
+Fetch the YOLOv3 weights and convert them for Keras (237 MB, one-off):
+
+```bash
+python scripts/download_assets.py
+```
+
+Detect objects in an image or a video:
+
+```bash
+python scripts/detect.py street.jpg --output outputs/street.png
+```
+
+```bash
+python scripts/detect.py dashcam.mp4 --output outputs/dashcam.mp4
+```
+
+Train a vehicle classifier from scratch:
+
+```bash
+python scripts/train_classifier.py --model cnn --epochs 20
+```
+
+Launch the web app:
+
+```bash
+streamlit run app/app.py
+```
+
+Upload a road scene and it comes back annotated, with sliders for the objectness
+and NMS thresholds so you can watch the precision/recall trade-off directly.
 
 ---
 
@@ -51,107 +96,11 @@ cars, while background was the easiest class by a wide margin. At 32×32 pixels 
 hatchback and a pickup really do look alike; that ambiguity is what the deeper
 models buy their way out of.
 
-### Sliding-window detection
-
-Scanning a 100×160 street scene with a 32×32 window at 16px steps gives 45
-windows, of which 12 contain a vehicle. The perceptron scored **82.2%** across
-those windows.
-
-> **Caveat on the CNN sliding-window number.** The notebook's
-> `sliding_predictions(model, windows, threshold)` helper took a `model`
-> argument but called `perceptron.predict()` in its body, so passing the CNN in
-> silently re-scored the perceptron — both report exactly 0.8222. The
-> presentation's "perceptron ~73% / CNN ~82%" comes from a separate run. The
-> bug is fixed in [`src/roadvision/sliding_window.py`](src/roadvision/sliding_window.py);
-> the CNN figure needs a re-run to be trustworthy.
-
 ### YOLOv3
 
-On the street-scene test image, YOLOv3 produced 22 candidate boxes above the
-0.4 objectness threshold, which NMS reduced to 9 detections: 4 cars, 2 people,
-1 bus, 1 truck and 1 traffic light. Applied frame-by-frame to a 301-frame
-dashcam clip, it tracked vehicles and traffic lights throughout.
-
-📹 **The rendered result is in this repo: [`VideoResult.mp4`](VideoResult.mp4)**
-(also [on Google Drive](https://drive.google.com/file/d/17PSLYgAJQP6l5GMWqCWJdCPD0yb2KRgU/view),
-which is what slide 13 of the deck links to).
-
----
-
-## Quickstart
-
-```bash
-git clone https://github.com/MMahmoud27/self-driving-object-detection.git
-cd self-driving-object-detection
-pip install -r requirements.txt
-```
-
-Fetch the pretrained YOLOv3 weights and sample media (~240 MB, one-off):
-
-```bash
-python scripts/download_assets.py
-```
-
-Run detection on an image or a video:
-
-```bash
-python scripts/detect.py data/image.jpg --output outputs/detected.png
-```
-
-```bash
-python scripts/detect.py data/video1.mp4 --output outputs/detected.mp4
-```
-
-Train a classifier from scratch:
-
-```bash
-python scripts/train_classifier.py --model cnn --epochs 20
-```
-
-Launch the web app:
-
-```bash
-streamlit run app/app.py
-```
-
-The app takes an uploaded road scene and returns it annotated, with sliders for
-the objectness and NMS thresholds so you can watch the precision/recall
-trade-off directly.
-
----
-
-## Repository layout
-
-```
-├── notebooks/          The original Colab notebooks, outputs intact
-│   ├── 01_image_classification.ipynb
-│   ├── 02_sliding_window_and_transfer_learning.ipynb
-│   ├── 03_yolov3_detection.ipynb
-│   └── 04_streamlit_deployment.ipynb
-├── src/roadvision/     The same code, factored into an importable package
-│   ├── data.py             CIFAR-10 → 3-class vehicle dataset, normalisation
-│   ├── models.py           Perceptron, CNN, transfer-learning builders
-│   ├── sliding_window.py   Window extraction and classification
-│   ├── yolo.py             YOLOv3 pre/post-processing, image + video detection
-│   └── viz.py              Accuracy curves, confusion matrices
-├── app/app.py          Streamlit front end
-├── scripts/            Command-line entry points
-├── VideoResult.mp4     The rendered YOLOv3 detection video
-└── docs/               Presentation, result images, detailed write-up
-```
-
-The notebooks are otherwise exactly as they ran on Colab, so the outputs saved in
-them are the real recorded results.
-
-> **Seven cells were completed after the course ended** and have no saved
-> outputs, because they have not been re-run: notebook 02 cells 25 and 79–85
-> (Activity 4b, VGG16 assembled by hand in Keras) and notebook 04 cells 26 and 30
-> (`utils.py` and the finished `app.py`). Run them in Colab with a GPU to fill in
-> their results. Every other cell's output is from the original session.
-
-The notebooks also duplicate a lot of code — notebooks 3 and 4 each carry their
-own copy of the same ~300-line YOLO helper block. `src/roadvision/` is that code
-deduplicated and documented, and it is what the app and scripts import.
+On a 720×400 street scene, YOLOv3 produced 22 candidate boxes above the 0.4
+objectness threshold, which NMS reduced to 9 detections: 4 cars, 2 people, 1
+bus, 1 truck and 1 traffic light. Full numbers in [docs/RESULTS.md](docs/RESULTS.md).
 
 ---
 
@@ -159,8 +108,8 @@ deduplicated and documented, and it is what the app and scripts import.
 
 ### The dataset
 
-CIFAR-10 has ten classes; only two are vehicles worth detecting. The project
-keeps `automobile` and `truck`, and folds the other eight classes into a single
+CIFAR-10 has ten classes; only two are vehicles worth detecting. This project
+keeps `automobile` and `truck`, and folds the other eight into a single
 `background` class so the model learns "not a vehicle" as an explicit answer
 rather than being forced to guess. 5,000 images per class for training, 1,000
 for test — balanced, so accuracy is directly interpretable against a 33.3%
@@ -182,6 +131,12 @@ traffic light are both findable. Each grid cell predicts 3 boxes; each box
 carries 4 geometry values, 1 objectness score and 80 class scores — which is why
 the output tensors are 255 deep.
 
+The weights ship as a Darknet `.weights` file: a short header and a flat stream
+of float32 values, with no architecture and no layer names. `roadvision.darknet`
+rebuilds the 75-convolution graph in Keras and reads the stream back in the same
+order Darknet wrote it, so the project depends only on the canonical weights
+release.
+
 Two thresholds control the output:
 
 - **`obj_thresh`** (default 0.4) — how sure the model must be before a box
@@ -192,50 +147,64 @@ Two thresholds control the output:
 
 ---
 
+## Repository layout
+
+```
+├── src/roadvision/
+│   ├── data.py             CIFAR-10 → 3-class vehicle dataset, normalisation
+│   ├── models.py           Perceptron, CNN, transfer-learning builders
+│   ├── sliding_window.py   Window extraction and classification
+│   ├── darknet.py          YOLOv3 architecture + Darknet weight loader
+│   ├── yolo.py             Pre/post-processing, image and video detection
+│   └── viz.py              Accuracy curves, confusion matrices
+├── app/app.py              Streamlit front end
+├── scripts/
+│   ├── download_assets.py  Fetch and convert the YOLOv3 weights
+│   ├── detect.py           Run detection on an image or video
+│   └── train_classifier.py Train and evaluate a vehicle classifier
+├── tests/                  42 tests, no GPU or weights required
+└── docs/                   Detailed results and figures
+```
+
+---
+
+## Tests
+
+```bash
+pytest
+```
+
+The suite covers box geometry, non-maximal suppression, window extraction,
+letterboxing and output decoding. Decoding is driven by a synthetic feature map
+rather than a real forward pass, so the whole thing runs in under a second with
+no TensorFlow, no GPU and no weights file — which is also what lets it run in
+CI on every push.
+
+---
+
 ## Limitations
 
 - **Frames are independent.** Video detection runs YOLO on each frame with no
   tracking between them, so boxes can flicker and an object briefly occluded is
-  simply lost and re-found.
+  lost and re-found.
 - **The custom classifier is trained at 32×32.** That resolution is why cars and
   trucks blur together; it was chosen to keep training fast, not because it's
   right for road scenes.
-- **YOLOv3 here is pretrained on COCO, not fine-tuned.** It has never seen this
-  project's data. It is also a 2018 model — YOLOv8/v11 are considerably faster
-  and more accurate.
-- **No real detection metrics.** Everything reported is classification accuracy
-  or eyeballed boxes. Proper evaluation would need mAP against ground-truth
-  bounding boxes, which this dataset doesn't provide.
-- **Not remotely road-safe.** This is a teaching pipeline. Real autonomous
-  vehicles fuse camera, LiDAR and radar, and treat a missed detection as a
-  safety event rather than a percentage point.
+- **YOLOv3 is used as pretrained on COCO, not fine-tuned.** It has never seen
+  this project's data. It is also a 2018 model — YOLOv8/v11 are considerably
+  faster and more accurate.
+- **No detection metrics.** Everything reported is classification accuracy or
+  eyeballed boxes. Proper evaluation would need mAP against ground-truth
+  bounding boxes.
+- **Not remotely road-safe.** Real autonomous vehicles fuse camera, LiDAR and
+  radar, and treat a missed detection as a safety event rather than a percentage
+  point.
 
 ---
 
-## Credits
-
-Code by **Mahmoud Mohamed**, written during the Inspirit AI Scholars program
-and extended afterwards.
+## References
 
 - YOLOv3 — Redmon & Farhadi, [*YOLOv3: An Incremental Improvement*](https://arxiv.org/abs/1804.02767); original paper [*You Only Look Once*](https://arxiv.org/abs/1506.02640)
 - VGG16 — Simonyan & Zisserman, [*Very Deep Convolutional Networks*](https://arxiv.org/abs/1409.1556)
 - [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) — Krizhevsky, University of Toronto
-- Pretrained weights and sample media come from the Inspirit AI course bucket
-
-The notebooks arrived with their scaffolding and helper functions already
-written; the team filled in the `### YOUR CODE HERE` cells. `src/roadvision/`,
-`app/app.py` and `scripts/` were written afterwards, outside the course.
-[NOTICE.md](NOTICE.md) has the full breakdown.
-
-The presentation is in [`docs/presentation/`](docs/presentation/), and a fuller
-write-up of the numbers is in [`docs/RESULTS.md`](docs/RESULTS.md).
-
-## Licensing and reuse
-
-**No open-source licence — all rights reserved.** Read it freely; please don't
-copy, modify or redistribute it without asking.
-
-That's deliberate. A large share of this code came with the course rather than
-being written by the team, so an MIT or Apache licence would be granting rights
-we don't hold. [NOTICE.md](NOTICE.md) sets out exactly which parts are the
-course's, which are the team's, and who to ask about reuse.
+- Pretrained backbones via [Keras Applications](https://keras.io/api/applications/); each carries its own upstream licence

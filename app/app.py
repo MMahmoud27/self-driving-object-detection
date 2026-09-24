@@ -4,10 +4,8 @@ Run it with:
 
     streamlit run app/app.py
 
-The notebook version of this app pasted every helper function into the script,
-because a Colab-hosted Streamlit server can only see files that were written out
-to disk. Here the helpers live in the ``roadvision`` package instead, so the app
-is just the interface.
+All the detection logic lives in the ``roadvision`` package, so this file is
+just the interface.
 """
 
 import os
@@ -20,7 +18,7 @@ from PIL import Image
 # Make the package importable when the app is launched from the repo root.
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
-from roadvision.yolo import COCO_LABELS, detect_image, load_darknet  # noqa: E402
+from roadvision.yolo import COCO_LABELS, detect_image, load_darknet
 
 DEFAULT_MODEL_PATH = os.environ.get("YOLO_WEIGHTS", "data/yolo_weights.h5")
 

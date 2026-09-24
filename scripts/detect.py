@@ -1,9 +1,9 @@
 """Run YOLOv3 over an image or a video.
 
-    python scripts/detect.py data/image.jpg  --output out.png
-    python scripts/detect.py data/video1.mp4 --output out.mp4
+    python scripts/detect.py street.jpg  --output outputs/street.png
+    python scripts/detect.py dashcam.mp4 --output outputs/dashcam.mp4
 
-The input type is picked from the file extension. Download the weights first:
+The input type is picked from the file extension. Fetch the weights first:
 
     python scripts/download_assets.py
 """
@@ -14,9 +14,9 @@ import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
-from PIL import Image  # noqa: E402
+from PIL import Image
 
-from roadvision.yolo import detect_image, detect_video, load_darknet  # noqa: E402
+from roadvision.yolo import detect_image, detect_video, load_darknet
 
 VIDEO_EXTENSIONS = {".mp4", ".avi", ".mov", ".mkv", ".webm"}
 DEFAULT_WEIGHTS = os.environ.get("YOLO_WEIGHTS", "data/yolo_weights.h5")

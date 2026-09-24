@@ -14,10 +14,14 @@ import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
-from tensorflow.keras.callbacks import ModelCheckpoint  # noqa: E402
+from tensorflow.keras.callbacks import ModelCheckpoint
 
-from roadvision.data import label_to_onehot, load_vehicle_dataset, normalize  # noqa: E402
-from roadvision.models import (  # noqa: E402
+from roadvision.data import (
+    label_to_onehot,
+    load_vehicle_dataset,
+    normalize,
+)
+from roadvision.models import (
     build_cnn,
     build_perceptron,
     build_transfer_classifier,

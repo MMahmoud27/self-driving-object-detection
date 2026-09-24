@@ -1,9 +1,5 @@
 """roadvision - object detection for self-driving cars.
 
-The package factors out the code that the four project notebooks build up
-incrementally, so the same functions can be reused from scripts and from the
-Streamlit app instead of being pasted between notebooks.
-
 Two independent pipelines live here:
 
 * A **3-class vehicle classifier** (``background`` / ``car`` / ``truck``) trained

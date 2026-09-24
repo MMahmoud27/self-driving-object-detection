@@ -80,11 +80,11 @@ def detect_vehicles(model, windows, positions=None, threshold=0.6):
 def window_accuracy(model, windows, labels):
     """Fraction of windows whose predicted class matches ``labels``.
 
-    Note: the notebook version of this helper called ``perceptron.predict``
-    directly inside the function body instead of using its ``model`` argument,
-    so passing a different model in silently re-scored the perceptron. That is
-    fixed here, which is why the CNN's sliding-window number in
-    ``docs/RESULTS.md`` is flagged as needing a re-run.
+    An earlier version of this helper called ``perceptron.predict`` directly
+    instead of using its ``model`` argument, so passing a different model in
+    silently re-scored the perceptron. That is fixed here, which is why the
+    CNN's sliding-window number in ``docs/RESULTS.md`` is flagged as needing a
+    re-run.
     """
     y_pred, _ = classify_windows(model, windows)
     return float(np.mean(y_pred == np.asarray(labels)))

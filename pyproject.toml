@@ -11,3 +11,13 @@ requires-python = ">=3.10"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.ruff]
+line-length = 115  # the Darknet layer table reads better aligned than wrapped
+src = ["src", "tests", "scripts", "app"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM"]
+# E402: the scripts and the app deliberately extend sys.path before importing
+# the package, so their imports cannot all sit at the top of the file.
+ignore = ["E402"]

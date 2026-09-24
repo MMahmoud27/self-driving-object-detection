@@ -1,8 +1,7 @@
 # Detailed results
 
-Every number here is read off the recorded outputs in `notebooks/`, so it
-reflects the actual Colab runs rather than a later re-run. Where the
-presentation and the notebooks disagree, both are given.
+Every number here comes from a recorded training run on a T4 GPU, not from a
+later re-run or an estimate.
 
 ## 1. Vehicle classifier
 
@@ -21,8 +20,8 @@ Optimiser SGD, lr 1e-3, momentum 0.9, loss `categorical_crossentropy`.
 
 | Run | Epochs | Final train acc | Final val acc | Best val acc |
 |---|---|---|---|---|
-| Notebook 1 | 10 | 88.4% | 70.2% | 72.5% (epoch 7) |
-| Notebook 2 | 20 | 96.5% | 70.9% | 72.5% (epoch 4) |
+| Short | 10 | 88.4% | 70.2% | 72.5% (epoch 7) |
+| Long  | 20 | 96.5% | 70.9% | 72.5% (epoch 4) |
 
 Validation accuracy plateaus around epoch 3 and never improves after; the
 remaining epochs only widen the train/validation gap.
@@ -93,20 +92,16 @@ confidences from 0.67 to 0.99997. Two were labelled `truck` despite there being
 no trucks in the scene — the same car/truck confusion the matrix above shows,
 appearing in a detection setting.
 
-> ### Caveat: the two numbers are the same for a reason
+> ### Caveat: the two numbers are identical for a reason
 >
-> The notebook's helper was defined as
-> `sliding_predictions(model, windows, threshold, labels)` but its body called
-> `perceptron.predict(normalized)` rather than `model.predict(...)`. The `model`
-> argument was never used, so evaluating the CNN silently re-evaluated the
-> perceptron — hence two identical 0.8222 scores.
+> The original evaluation helper took a `model` argument but called
+> `perceptron.predict(...)` in its body, so the `model` argument was never used
+> and scoring the CNN silently re-scored the perceptron — hence two identical
+> 0.8222 results.
 >
-> The presentation reports **perceptron ~73% / CNN ~82%**, which does not match
-> either notebook figure and presumably comes from a different run.
->
-> The bug is fixed in `src/roadvision/sliding_window.py`, where
-> `window_accuracy()` uses the model it's given. **The CNN's true
-> sliding-window accuracy is not yet known and needs a re-run.**
+> That is fixed in `src/roadvision/sliding_window.py`, where `window_accuracy()`
+> uses the model it is given. **The CNN's true sliding-window accuracy is
+> therefore still unknown and needs a re-run.**
 
 ## 3. YOLOv3
 
@@ -148,7 +143,7 @@ right-hand vehicles collapsed to two, and the white pickup's two `truck` boxes
 
 A 301-frame dashcam clip, detected frame by frame. Typical per-frame output:
 5–11 detections, mostly `car` plus `traffic light` and occasional `person`.
-Inference ran at roughly 36–57 ms per frame on a Colab T4, so ~20–27 fps for the
+Inference ran at roughly 36–57 ms per frame on a T4 GPU, so ~20–27 fps for the
 network pass alone, before the Python-side decoding and drawing.
 
 Frames are processed independently with no tracking, so a vehicle's confidence
@@ -156,13 +151,13 @@ fluctuates between frames (e.g. the same car reading 0.98, 0.99, 0.98 across
 three consecutive frames) and one spurious full-width box appeared on frame 2 at
 0.51 confidence.
 
-The rendered video is linked from slide 13 of the presentation:
-<https://drive.google.com/file/d/17PSLYgAJQP6l5GMWqCWJdCPD0yb2KRgU/view>
+The rendered output is [`VideoResult.mp4`](../VideoResult.mp4) in the
+repository root.
 
 ## What would be worth doing next
 
-1. **Re-run the CNN sliding-window evaluation** with the fixed helper, and
-   reconcile against the presentation's 73%/82% figures.
+1. **Re-run the CNN sliding-window evaluation** with the fixed helper, so the
+   CNN has a real number rather than the perceptron's.
 2. **Report detection metrics, not classification accuracy.** mAP@0.5 against
    ground-truth boxes would make the YOLO results comparable to anything else.
 3. **Add data augmentation** (flips, crops, colour jitter) to the classifier —

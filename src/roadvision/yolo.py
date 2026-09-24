@@ -212,10 +212,9 @@ def do_nms(boxes_, nms_thresh, obj_thresh):
     stronger one by more than ``nms_thresh`` has that class score zeroed. What
     survives above ``obj_thresh`` is returned.
 
-    One difference from the notebook version: a box whose scores clear the
-    threshold for two classes at once is emitted once, labelled with its highest
-    scoring class. The notebook appended the same box object once per qualifying
-    class, which drew an identical box several times over.
+    A box whose scores clear the threshold for two classes at once is emitted
+    once, labelled with its highest scoring class, rather than once per
+    qualifying class — which would draw an identical box several times over.
     """
     boxes = deepcopy(boxes_)
     if not boxes:
@@ -284,7 +283,7 @@ def draw_boxes(image_, boxes, labels=COCO_LABELS, verbose=False):
 
     for box in reversed(boxes):
         c = box.get_label()
-        label = "{} {:.2f}".format(labels[c], box.get_score())
+        label = f"{labels[c]} {box.get_score():.2f}"
 
         top = max(0, int(np.floor(box.ymin + 0.5)))
         left = max(0, int(np.floor(box.xmin + 0.5)))
@@ -317,12 +316,20 @@ def draw_boxes(image_, boxes, labels=COCO_LABELS, verbose=False):
     return image
 
 
-def load_darknet(model_path):
-    """Load the pretrained YOLOv3 Keras model.
+def load_darknet(model_path, input_shape=(NET_H, NET_W, 3)):
+    """Load YOLOv3 from either a saved Keras model or raw Darknet weights.
 
-    ``compile=False`` skips rebuilding the training-time loss and optimiser,
-    which are irrelevant for inference and slow to reconstruct.
+    A ``.weights`` file carries no architecture, so the graph is rebuilt first
+    and the stream read into it; anything else is treated as a saved Keras
+    model. ``compile=False`` skips reconstructing the training-time loss and
+    optimiser, which inference does not need.
     """
+    if str(model_path).endswith(".weights"):
+        from roadvision.darknet import build_yolov3, load_darknet_weights
+
+        model = build_yolov3(input_shape=input_shape)
+        return load_darknet_weights(model, model_path)
+
     import tensorflow as tf
 
     return tf.keras.models.load_model(model_path, compile=False)
@@ -356,7 +363,7 @@ def detect_video(video_path, output_path, darknet, obj_thresh=0.4,
     """
     vid = cv2.VideoCapture(video_path)
     if not vid.isOpened():
-        raise IOError("Couldn't open video: {}".format(video_path))
+        raise OSError(f"Couldn't open video: {video_path}")
 
     fourcc = cv2.VideoWriter_fourcc(*"mp4v")
     fps = vid.get(cv2.CAP_PROP_FPS)
@@ -374,7 +381,7 @@ def detect_video(video_path, output_path, darknet, obj_thresh=0.4,
 
             num_frame += 1
             if progress_every and num_frame % progress_every == 0:
-                print("... frame {}".format(num_frame))
+                print(f"... frame {num_frame}")
 
             frame_pil = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
             detected = detect_image(frame_pil, darknet, obj_thresh, nms_thresh,
@@ -384,5 +391,5 @@ def detect_video(video_path, output_path, darknet, obj_thresh=0.4,
         vid.release()
         out.release()
 
-    print("Wrote {} frames to {}".format(num_frame, output_path))
+    print(f"Wrote {num_frame} frames to {output_path}")
     return output_path
