@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "roadvision"
+version = "1.0.0"
+description = "Object detection for self-driving cars: CIFAR-10 vehicle classification, sliding windows, transfer learning and YOLOv3."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+
+[tool.setuptools.packages.find]
+where = ["src"]

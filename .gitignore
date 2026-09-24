@@ -1,0 +1,26 @@
+# Downloaded assets: weights (237 MB), sample images, sample video
+data/
+
+# Trained checkpoints
+models/
+*.keras
+*.h5
+
+# Detection outputs
+outputs/
+*_detected.mp4
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.ipynb_checkpoints/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
