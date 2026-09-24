@@ -139,11 +139,18 @@ trade-off directly.
 └── docs/               Presentation, the detection video, result images, write-up
 ```
 
-The notebooks are kept exactly as they ran on Colab, so the outputs in them are
-the real recorded results. They also duplicate a lot of code — notebooks 3 and 4
-each carry their own copy of the ~300-line YOLO helper block. `src/roadvision/`
-is that code deduplicated and documented, and it is what the app and scripts
-import.
+The notebooks are otherwise exactly as they ran on Colab, so the outputs saved in
+them are the real recorded results.
+
+> **Seven cells were completed after the course ended** and have no saved
+> outputs, because they have not been re-run: notebook 02 cells 25 and 79–85
+> (Activity 4b, VGG16 assembled by hand in Keras) and notebook 04 cells 26 and 30
+> (`utils.py` and the finished `app.py`). Run them in Colab with a GPU to fill in
+> their results. Every other cell's output is from the original session.
+
+The notebooks also duplicate a lot of code — notebooks 3 and 4 each carry their
+own copy of the same ~300-line YOLO helper block. `src/roadvision/` is that code
+deduplicated and documented, and it is what the app and scripts import.
 
 ---
 
@@ -212,13 +219,22 @@ Inspirit AI Scholars program.
 - YOLOv3 — Redmon & Farhadi, [*YOLOv3: An Incremental Improvement*](https://arxiv.org/abs/1804.02767); original paper [*You Only Look Once*](https://arxiv.org/abs/1506.02640)
 - VGG16 — Simonyan & Zisserman, [*Very Deep Convolutional Networks*](https://arxiv.org/abs/1409.1556)
 - [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) — Krizhevsky, University of Toronto
-- Pretrained weights and sample media come from the Inspirit AI course bucket;
-  notebook scaffolding is theirs, the completed implementations are ours.
+- Pretrained weights and sample media come from the Inspirit AI course bucket
+
+The notebooks arrived with their scaffolding and helper functions already
+written; the team filled in the `### YOUR CODE HERE` cells. `src/roadvision/`,
+`app/app.py` and `scripts/` were written afterwards, outside the course.
+[NOTICE.md](NOTICE.md) has the full breakdown.
 
 The presentation is in [`docs/presentation/`](docs/presentation/), and a fuller
 write-up of the numbers is in [`docs/RESULTS.md`](docs/RESULTS.md).
 
-## License
+## Licensing and reuse
 
-MIT — see [LICENSE](LICENSE). Note that this covers the project's own code; the
-pretrained weights and course-provided media carry their own terms.
+**No open-source licence — all rights reserved.** Read it freely; please don't
+copy, modify or redistribute it without asking.
+
+That's deliberate. A large share of this code came with the course rather than
+being written by the team, so an MIT or Apache licence would be granting rights
+we don't hold. [NOTICE.md](NOTICE.md) sets out exactly which parts are the
+course's, which are the team's, and who to ask about reuse.
