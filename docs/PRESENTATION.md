@@ -6,14 +6,15 @@ The slide deck is at
 
 ## The video result
 
-Slide 13 links out to the detection video rather than embedding it:
+**[`video1_detected.mp4`](video1_detected.mp4)** — YOLOv3 run frame by frame over
+the 301-frame dashcam clip.
 
-**<https://drive.google.com/file/d/17PSLYgAJQP6l5GMWqCWJdCPD0yb2KRgU/view>**
+Slide 13 of the deck links out to the same video on Google Drive rather than
+embedding it:
+<https://drive.google.com/file/d/17PSLYgAJQP6l5GMWqCWJdCPD0yb2KRgU/view>
 
-The `.pptx` contains only a hyperlink and a placeholder thumbnail — the video
-file itself is not inside the deck and so is not in this repository. To put a
-copy here, download it from that link and either commit it to `docs/` (if it's
-small enough) or attach it to a GitHub release.
+The `.pptx` itself contains only that hyperlink and a placeholder thumbnail, so
+the copy in this folder was uploaded separately.
 
 You can also regenerate it:
 
